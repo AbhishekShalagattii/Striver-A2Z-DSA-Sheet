@@ -5,7 +5,7 @@ using namespace std;
 vector<int> spiralTraversal(vector<vector<int>> &arr, int n, int m)
 {
     int top = 0, left = 0;
-    int bottom = m-1, right = n-1;
+    int bottom = n-1, right = m-1;
     vector<int> ans;
 
     while(top<=bottom && left<=right)
