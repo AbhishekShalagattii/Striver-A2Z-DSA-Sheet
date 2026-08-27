@@ -1,4 +1,5 @@
 //So the program here is to find out the maximum len of the subarray which will have sum as k
+//Optimal solution for array with only +ve elems
 #include<bits/stdc++.h>
 using namespace std;
 

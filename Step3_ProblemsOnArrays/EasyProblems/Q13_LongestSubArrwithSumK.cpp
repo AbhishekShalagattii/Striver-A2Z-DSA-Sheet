@@ -1,4 +1,6 @@
 //This program will give us the maxi leng of the subarray(contigeous part of array) with sum == give sum k
+//Optimal solution for array with +ve and -ve elems 
+//Better approach for array with only +ve elems
 #include<bits/stdc++.h>
 using namespace std;
 
