@@ -2,7 +2,33 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+//Brute force approach => O(nlogn for sorting) + O(2n for iterating and checking)
+// vector<vector<int>> mergeOverlapping(vector<vector<int>> &nums)
+// {
+//     int n = nums.size();
+//     vector<vector<int>> ans;
 
+//     for( int i = 0; i < n; i++)
+//     {
+//         int start = nums[i][0];
+//         int end = nums[i][1];
+//         if(!ans.empty() && end <= ans.back()[1]) continue;
+//         for(int j = i + 1; j < n; j++)
+//         {
+//             if(nums[j][0] < end)
+//             {
+//                 end = max(end,nums[j][1]);
+//             }
+//             else{
+//                 break;
+//             }
+//         }
+//         ans.push_back({start,end});
+//     }
+//     return ans;
+// }
+
+//optimal approach
 vector<vector<int>> mergeOverlapping(vector<vector<int>> &nums)
 {
     int n = nums.size();
@@ -10,20 +36,13 @@ vector<vector<int>> mergeOverlapping(vector<vector<int>> &nums)
 
     for( int i = 0; i < n; i++)
     {
-        int start = nums[i][0];
-        int end = nums[i][1];
-        if(!ans.empty() && end <= ans.back()[1]) continue;
-        for(int j = i + 1; j < n; j++)
+        if(ans.empty() || nums[i][0] > ans.back()[1])
         {
-            if(nums[j][0] < end)
-            {
-                end = max(end,nums[j][1]);
-            }
-            else{
-                break;
-            }
+            ans.push_back(nums[i]);
         }
-        ans.push_back({start,end});
+        else{
+            ans.back()[1] = max(ans.back()[1],nums[i][1]);
+        }
     }
     return ans;
 }
