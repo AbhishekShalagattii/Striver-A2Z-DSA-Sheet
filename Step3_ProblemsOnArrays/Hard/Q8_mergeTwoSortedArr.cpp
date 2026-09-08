@@ -2,42 +2,69 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+//Brute Approach
+// void mergeSortedArr(int arr1[],int arr2[],int n,int m)
+// {
+//     int arr3[n+m];
+//     int left = 0;
+//     int right = 0;
+//     int index = 0;
+
+//     while (left < n && right < m)
+//     {
+//         if(arr1[left] <= arr2[right])
+//         {
+//             arr3[index] = arr1[left];
+//             left++,index++;
+//         }
+//         else{
+//             arr3[index] = arr2[right];
+//             right++,index++;
+//         }
+//     }
+
+//     while (left < n)
+//     {
+//         arr3[index++] = arr1[left++];
+//     }
+//     while (right < m)
+//     {
+//         arr3[index++] = arr2[right++];
+//     }
+
+//     for( int i = 0; i < n+m; i++)
+//     {
+//         if(i<n) arr1[i] = arr3[i];
+//         else arr2[i-n] = arr3[i];
+//     }
+// }
+
+//Optimal sol no 1 -> using two pointer and sorting the two arrays
 void mergeSortedArr(int arr1[],int arr2[],int n,int m)
 {
-    int arr3[n+m];
-    int left = 0;
+    int left = n - 1;
     int right = 0;
-    int index = 0;
 
-    while (left < n && right < m)
+    while( left >= 0 && right < m )
     {
-        if(arr1[left] <= arr2[right])
+        if(arr1[left] > arr2[right])
         {
-            arr3[index] = arr1[left];
-            left++,index++;
+            swap(arr1[left], arr2[right]);
+            left--,right++;
         }
         else{
-            arr3[index] = arr2[right];
-            right++,index++;
+            break;
         }
     }
 
-    while (left < n)
-    {
-        arr3[index++] = arr1[left++];
-    }
-    while (right < m)
-    {
-        arr3[index++] = arr2[right++];
-    }
+    sort(arr1,arr1+n);
+    sort(arr2,arr2+m);
 
-    for( int i = 0; i < n+m; i++)
+    //for merging the nums2 to nums1
+    for( int i = 0; i < m; i++)
     {
-        if(i<n) arr1[i] = arr3[i];
-        else arr2[i-n] = arr3[i];
+        arr1[n+i] = arr2[i];
     }
-    
-    
 }
 
 int main()
