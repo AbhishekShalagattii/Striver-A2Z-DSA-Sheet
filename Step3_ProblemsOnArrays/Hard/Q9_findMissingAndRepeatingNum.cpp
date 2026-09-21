@@ -1,12 +1,12 @@
-//This program sol will give/return  us the missing and repeating numbers from an array
-#include<bits/stdc++.h>
+// This program sol will give/return  us the missing and repeating numbers from an array
+#include <bits/stdc++.h>
 using namespace std;
 
-//Better Approach using the hashArr Tc~O(2N) SC~O(N)
-// vector<int> findMissAndRepeatNums(vector<int> &nums)
-// {
-//     int n = nums.size();
-//     int hashArr[n+1] = {0};
+// Better Approach using the hashArr Tc~O(2N) SC~O(N)
+//  vector<int> findMissAndRepeatNums(vector<int> &nums)
+//  {
+//      int n = nums.size();
+//      int hashArr[n+1] = {0};
 
 //     for( int i = 0; i < n; i++)
 //     {
@@ -26,25 +26,89 @@ using namespace std;
 //     return {repeating,missing};
 // }
 
+// Optimal approach using the basic maths
+//  vector<int> findMissAndRepeatNums(vector<int> &nums)
+//  {
+//      int n = nums.size();
+//      int SN = (n*(n+1))/2;
+//      int S2N = (n*(n+1)*(2*n+1))/6;
+//      int S = 0, S2 = 0;
+
+//     for( int i = 0; i < n; i++)
+//     {
+//         S += nums[i];
+//         S2 += nums[i] * nums[i];
+//     }
+
+//     int val1 = S - SN;
+//     int val2 = S2 - S2N;
+//     val2 = val2/val1;
+//     int x = (val1+val2)/2;
+//     int y = x - val1;
+//     return {x,y};
+// }
+
+// Optimal approach using the xor operation:
 vector<int> findMissAndRepeatNums(vector<int> &nums)
 {
     int n = nums.size();
-    int SN = (n*(n+1))/2;
-    int S2N = (n*(n+1)*(2*n+1))/6;
-    int S = 0, S2 = 0;
+    int xr = 0;
 
-    for( int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
-        S += nums[i];
-        S2 += nums[i] * nums[i];
+        xr = xr ^ nums[i];
+        xr = xr ^ i + 1;
     }
 
-    int val1 = S - SN;
-    int val2 = S2 - S2N;
-    val2 = val2/val1;
-    int x = (val1+val2)/2;
-    int y = x - val1;
-    return {x,y};
+    int bitNo = 0;
+    while (1)
+    {
+        if ((xr & (1 << bitNo)) != 0)
+        {
+            break;
+        }
+        bitNo++;
+    }
+
+    int zero = 0;
+    int one = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        // part of ones club
+        if ((nums[i] & (1 << bitNo)) != 0)
+        {
+            one = one ^ nums[i];
+        }
+        // Part of zero club
+        else
+        {
+            zero = zero ^ nums[i];
+        }
+    }
+
+    for (int i = 1; i <= n; i++)
+    {
+        // part of ones club
+        if ((i & (1 << bitNo)) != 0)
+        {
+            one = one ^ i;
+        }
+        // Part of zero club
+        else
+        {
+            zero = zero ^ i;
+        }
+    }
+
+    int cnt = 0;
+
+    for(int i = 0; i < n ; i++)
+    {
+        if(nums[i] == zero) cnt++;
+    }
+    if(cnt == 2) return {zero,one};
+    return {one,zero};
 }
 
 int main()
@@ -54,7 +118,7 @@ int main()
 
     vector<int> nums;
 
-    for( int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
         int x;
         cin >> x;
@@ -63,7 +127,7 @@ int main()
 
     vector<int> res = findMissAndRepeatNums(nums);
 
-    for( auto it : res)
+    for (auto it : res)
     {
         cout << it << " ";
     }
